@@ -6,7 +6,6 @@ import { USERS_FEATURE_KEY } from "./users.reducers";
 import { UsersLocalStorageService } from "../../services/users-local-storage.services";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 
-
 export const getUsers$ = createEffect(
     () => {
         const actions$ = inject(Actions);
@@ -15,16 +14,20 @@ export const getUsers$ = createEffect(
         return actions$.pipe(
             ofType(usersActions.getUsers),
             switchMap(() => {
-                const usersFromLocalStorage = usersLocalService.getLocalStorageUsers(USERS_FEATURE_KEY);
+                const usersFromLocalStorage = usersLocalService
+                    .getLocalStorageUsers(USERS_FEATURE_KEY);
                 if (usersFromLocalStorage) {
-                    return of(usersActions.getUsersSuccess({ users: usersFromLocalStorage }))
+                    return of(usersActions
+                        .getUsersSuccess({ users: usersFromLocalStorage }))
                 } else {
-                    return userApiService.getUsers().pipe(
-                        map((users => {
-                            usersLocalService.setLocalStorageUsers(USERS_FEATURE_KEY, users)
-                            return usersActions.getUsersSuccess({ users })
-                        }))
-                    )
+                    return userApiService.getUsers()
+                        .pipe(
+                            map((users => {
+                                usersLocalService.setLocalStorageUsers(USERS_FEATURE_KEY, users)
+                                return usersActions.getUsersSuccess({ users })
+                            })
+                            )
+                        )
                 }
             }
             )

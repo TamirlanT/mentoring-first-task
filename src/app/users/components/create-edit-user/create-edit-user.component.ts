@@ -21,7 +21,7 @@ import { User } from "../../modules/interfaces/user.interface";
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        ReactiveFormsModule
+        ReactiveFormsModule,
     ],
     templateUrl: './create-edit-user.component.html',
     styleUrl: './create-edit-user.component.css'

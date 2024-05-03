@@ -5,7 +5,6 @@ import { User } from "../modules/interfaces/user.interface";
     providedIn: 'root'
 })
 export class UsersLocalStorageService {
-
     public getLocalStorageUsers(key: string): User[] {
         const usersString = localStorage.getItem(key);
         return usersString ? JSON.parse(usersString) : []
@@ -23,7 +22,6 @@ export class UsersLocalStorageService {
         let source = this.getLocalStorageUsers(key);
         source = source.map((user) => user.id == updatedUser.id ? updatedUser : user)
         this.clearLocalStorage()
-        console.log(source);
         return this.setLocalStorageUsers(key, source)
     }
 }

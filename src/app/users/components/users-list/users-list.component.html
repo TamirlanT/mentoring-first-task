@@ -2,7 +2,6 @@
 <button (click)="openDialog()">Добавить пользователя</button>
 <button (click)="clearStorage()">Почистить Local Storage</button>
 <hr>
-
 <div class="user">
     @for (user of users$ | async; track $index){
     <app-user-card class="user-card" [user]="user" (deleteUser)="deleteUser($event)"

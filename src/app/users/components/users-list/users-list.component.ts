@@ -29,9 +29,7 @@ export class UsersListComponent implements OnInit {
     readonly usersLocalService = inject(UsersLocalStorageService);
     readonly users$ = this.store.select(selectAllUsers);
 
-    constructor(
-        private dialog: MatDialog,
-    ) { }
+    constructor(private dialog: MatDialog) { }
 
     openDialog(): void {
         const dialogRef = this.dialog.open(CreateEditUserComponent, {
@@ -39,11 +37,8 @@ export class UsersListComponent implements OnInit {
         })
         this.store.dispatch(createUser())
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog was closed`);
             if (result) {
-                console.log(result);
                 this.store.dispatch(createUserSuccess({ user: result }))
-
                 let localUsers = this.usersLocalService.getLocalStorageUsers(USERS_FEATURE_KEY);
                 localUsers = [...localUsers, result]
                 this.usersLocalService.setLocalStorageUsers(USERS_FEATURE_KEY, localUsers)
@@ -54,20 +49,13 @@ export class UsersListComponent implements OnInit {
     deleteUser(id: number): void {
         this.store.dispatch(deleteUser())
         this.store.dispatch(deleteUserSuccess({ id: id }))
-        console.log(`Пользователь с id ${id} был удален`);
     }
 
     editUser(user: User): void {
-
         const openDialogEditUser = this.dialog.open(CreateEditUserComponent,
-            {
-                data: { isEdit: true, user }
-            });
-
+            { data: { isEdit: true, user } });
         this.store.dispatch(editUser());
-
         openDialogEditUser.afterClosed().subscribe(result => {
-            console.log(`edit dialog was closed`);
             if (result) {
                 this.store.dispatch(editUserSuccess({ user: result }));
                 this.usersLocalService.updateLocalStorage(USERS_FEATURE_KEY, result)
